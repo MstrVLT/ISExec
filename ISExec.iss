@@ -12,13 +12,13 @@ Source: "ISExec.dll"; Flags: dontcopy nocompression
 [Code]
 
 type
-  TCancelFunc = procedure(var Cancel: Boolean);
+  TCancelFunc = function: Boolean;
 
 procedure Exec(aEXEName: WideString; aVisible: Boolean; aCallback: TCancelFunc); external 'Exec@files:ISExec.dll stdcall';
 
-procedure CallMe(var Cancel: Boolean);
+function CallMe: Boolean;
 begin
-  Cancel := False;
+  Result := False;
 end;
 
 function NextButtonClick(CurPage: Integer): Boolean;
