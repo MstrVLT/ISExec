@@ -38,7 +38,11 @@ begin
   FillChar(PI, SizeOf(PI), 0);
   SI.cb := SizeOf(SI);
   SI.dwFlags := STARTF_USESHOWWINDOW;
-  SI.wShowWindow := SW_SHOWNORMAL;
+
+  if task.Param['Visible'] then
+    SI.wShowWindow := SW_SHOWNORMAL
+  else
+    SI.wShowWindow := SW_HIDE;
 
   SetLastError(ERROR_INVALID_PARAMETER);
   {$WARN SYMBOL_PLATFORM OFF}
@@ -65,6 +69,7 @@ begin
   lTask := CreateTask(ExecTask)
     .SetParameter('ExeName', aEXEName)
     .SetParameter('Callback', TOmniValue.FromRecord<TMethod>(aCallback))
+    .SetParameter('Visible', aVisible)
     .Run;
   while not lTask.WaitFor(10) do
     begin
